@@ -1,4 +1,8 @@
 # ⚔️ PW.Ability
+> ⚠️ **Development Status:**  
+> This module is currently being extracted and refactored from **ProjectW**, a private Unreal Engine 5 prototype.  
+> While most systems are functional, interfaces and folder structures may still change as the refactor progresses.  
+> The goal is to make this a clean, reusable, standalone module for future Unreal projects.  
 
 **PW.Ability** is a modular Unreal Engine 5 framework providing base classes and utilities for spawning and managing gameplay ability actors such as projectiles and effect actors.
 
