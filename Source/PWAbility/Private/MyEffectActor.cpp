@@ -19,50 +19,50 @@ void AMyEffectActor::BeginPlay()
 
 void AMyEffectActor::ApplyEffectToTarget(AActor* TargetActor, FEffectData EffectData)
 {
-	if (TargetActor->ActorHasTag(FName("Enemy")) && !bApplyEffectToEnemies) return;
-	
-	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
-	if (!TargetASC) return;
-	check(EffectData.GameplayEffectClass)
-	
-	FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
-	EffectContextHandle.AddSourceObject(this);
-	const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(
-		EffectData.GameplayEffectClass, ActorLevel, EffectContextHandle);
-	const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(
-		*EffectSpecHandle.Data.Get());
-	
-	const bool bIsInfinite = EffectSpecHandle.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite;
-	if (bIsInfinite && EffectData.EffectRemovalPolicy != EEffectRemovalPolicy::DoNotRemove)
-	{
-		ActiveEffectHandles.Add(ActiveEffectHandle, TargetASC);
-	}
-	
-	if (!bIsInfinite && bDestroyOnEffectApplication)
-	{
-		Destroy();
-	}
+	// if (TargetActor->ActorHasTag(FName("Enemy")) && !bApplyEffectToEnemies) return;
+	//
+	// UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	// if (!TargetASC) return;
+	// check(EffectData.GameplayEffectClass)
+	//
+	// FGameplayEffectContextHandle EffectContextHandle = TargetASC->MakeEffectContext();
+	// EffectContextHandle.AddSourceObject(this);
+	// const FGameplayEffectSpecHandle EffectSpecHandle = TargetASC->MakeOutgoingSpec(
+	// 	EffectData.GameplayEffectClass, ActorLevel, EffectContextHandle);
+	// const FActiveGameplayEffectHandle ActiveEffectHandle = TargetASC->ApplyGameplayEffectSpecToSelf(
+	// 	*EffectSpecHandle.Data.Get());
+	//
+	// const bool bIsInfinite = EffectSpecHandle.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite;
+	// if (bIsInfinite && EffectData.EffectRemovalPolicy != EEffectRemovalPolicy::DoNotRemove)
+	// {
+	// 	ActiveEffectHandles.Add(ActiveEffectHandle, TargetASC);
+	// }
+	//
+	// if (!bIsInfinite && bDestroyOnEffectApplication)
+	// {
+	// 	Destroy();
+	// }
 }
 
 void AMyEffectActor::RemoveEffectFromTarget(AActor* TargetActor)
 {
-	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
-	if (!IsValid(TargetASC)) return;
-	
-	TArray<FActiveGameplayEffectHandle> HandlesToRemove;
-	for (auto HandlePair : ActiveEffectHandles)
-	{
-		if (TargetASC == HandlePair.Value)
-		{
-			TargetASC->RemoveActiveGameplayEffect(HandlePair.Key, 1);
-			HandlesToRemove.Add(HandlePair.Key);
-		}
-	}
-		
-	for (auto& Handle : HandlesToRemove)
-	{
-		ActiveEffectHandles.FindAndRemoveChecked(Handle);
-	}
+	// UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	// if (!IsValid(TargetASC)) return;
+	//
+	// TArray<FActiveGameplayEffectHandle> HandlesToRemove;
+	// for (auto HandlePair : ActiveEffectHandles)
+	// {
+	// 	if (TargetASC == HandlePair.Value)
+	// 	{
+	// 		TargetASC->RemoveActiveGameplayEffect(HandlePair.Key, 1);
+	// 		HandlesToRemove.Add(HandlePair.Key);
+	// 	}
+	// }
+	// 	
+	// for (auto& Handle : HandlesToRemove)
+	// {
+	// 	ActiveEffectHandles.FindAndRemoveChecked(Handle);
+	// }
 }
 
 void AMyEffectActor::OnOverlap(AActor* TargetActor)
