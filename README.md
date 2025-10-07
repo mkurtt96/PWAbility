@@ -64,4 +64,3 @@ Licensed under the **MIT License** — see the `LICENSE` file for details.
 
 **Metehan Goksel Kurtulan (Iompaeqe)**  
 Game Developer — Systems & Gameplay Engineering  
-Part of the modular **ProjectW** ecosystem.
