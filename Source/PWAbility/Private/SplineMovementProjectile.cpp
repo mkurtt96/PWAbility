@@ -64,7 +64,7 @@ void ASplineMovementProjectile::BeginPlay()
 
 		SplineComponent->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
 
-		FVector::Dist(SpellParams->More->GetVector("TargetLocation"), GetActorLocation());
+		//FVector::Dist(SpellParams->More->GetVector("TargetLocation"), GetActorLocation());
 	}
 }
 
@@ -77,7 +77,9 @@ void ASplineMovementProjectile::Tick(const float DeltaSeconds)
 	{
 		if (bIsReflected && !bIsPathComplete)
 		{
-			DistanceTravelled += SpellParams->More->GetFloat("Speed") * SpeedScaleFactor * CustomProjectileSpeedMultiplier.GetValueAtLevel(DistanceTravelled / SplineComponent->GetSplineLength()) * DeltaSeconds;
+			const FRichCurve* RC = CustomProjectileSpeedMultiplier.GetRichCurveConst();
+			const float SpeedMultiplier = RC->Eval(DistanceTravelled / SplineComponent->GetSplineLength(), 1.f);
+			DistanceTravelled += SpellParams->More->GetFloat("Speed") * SpeedScaleFactor * SpeedMultiplier * DeltaSeconds;
 
 			if (DistanceTravelled >= SplineComponent->GetSplineLength())
 			{
@@ -87,7 +89,9 @@ void ASplineMovementProjectile::Tick(const float DeltaSeconds)
 		}
 		else if (!bIsSplineStopped)
 		{
-			DistanceTravelled += SpellParams->More->GetFloat("Speed") * SpeedScaleFactor * CustomProjectileSpeedMultiplier.GetValueAtLevel(DistanceTravelled / SplineComponent->GetSplineLength()) * DeltaSeconds;
+			const FRichCurve* RC = CustomProjectileSpeedMultiplier.GetRichCurveConst();
+			const float SpeedMultiplier = RC->Eval(DistanceTravelled / SplineComponent->GetSplineLength(), 1.f);
+			DistanceTravelled += SpellParams->More->GetFloat("Speed") * SpeedScaleFactor * SpeedMultiplier * DeltaSeconds;
 
 			const FVector Location = SplineComponent->GetLocationAtDistanceAlongSpline(DistanceTravelled, ESplineCoordinateSpace::World);
 			SetActorLocation(Location);

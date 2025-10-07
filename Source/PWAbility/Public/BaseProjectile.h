@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilityEnums.h"
 #include "WBaseSpellActor.h"
+#include "Ability/SpellParams.h"
 #include "GameFramework/Actor.h"
 #include "Interface/Projectile.h"
 #include "BaseProjectile.generated.h"
@@ -12,7 +13,6 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnProjectileOverlapDelegate, AActor*, OtherActor);
 
 class UWProjectileMovementComponent;
-class UProjectileSpellParams;
 class UNiagaraSystem;
 class USphereComponent;
 
@@ -68,7 +68,7 @@ public: // ---- FUNCTIONS
 	void Reflect(AActor* ActorReflectedBy);
 
 	UFUNCTION(BlueprintCallable, Category = "Projectile|Functions")
-	void Bounce(const FVector PointOfOrigin) const;
+	virtual void Bounce(const FVector PointOfOrigin) const;
 
 	virtual void ResetSpell() override;
 protected:
@@ -76,7 +76,7 @@ protected:
 	virtual void Destroyed() override;
 
 	UFUNCTION()
-	void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	virtual void OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	
 	//Effects
 	UFUNCTION(BlueprintCallable, Category = "Projectile|Effects")
@@ -84,10 +84,10 @@ protected:
 	
 	//Impact Effects
 	UFUNCTION(BlueprintCallable, Category = "Projectile|Effects")
-	void HandleImpactEffects();
+	virtual void HandleImpactEffects();
 	virtual void PlayImpactEffects();
 	UFUNCTION(NetMulticast, Reliable)
-	void MulticastPlayImpactEffects();
+	virtual void MulticastPlayImpactEffects();
 	
 	/** Predefined Hit Logic. Ideally should be called on Hit. Will Destroy on Projectile Hit.
 	 * Handles Impact Effects. Applies Damage Effect if ShouldApplyEffect. And Destroy if ShouldDestroy. */
@@ -105,9 +105,9 @@ protected:
 	FVector CalculateBounceVelocity(const FVector PointOfOrigin, const FVector Velocity) const;
 	
 	virtual bool CanHitTarget(const AActor* OtherActor);
-	FORCEINLINE bool ShouldDestroy() const { return HitCount == DestroyOnHit; }
-	void HandleProjectileCollision(const AActor* OtherActor);
-	bool ShouldIgnoreOverlap(const AActor* OtherActor) const;
+	FORCEINLINE virtual bool ShouldDestroy() const { return HitCount == DestroyOnHit; }
+	virtual void HandleProjectileCollision(const AActor* OtherActor);
+	virtual bool ShouldIgnoreOverlap(const AActor* OtherActor) const;
 private:
 
 public: // GETTERS
