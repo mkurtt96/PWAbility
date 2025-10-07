@@ -36,9 +36,9 @@ Otherwise, it compiles standalone with `WITH_PWTEAMS=0`.
 
 ## 🧠 Key Concepts
 
-- **SpellParams-driven logic** — every spawned ability carries a context container derived from `USpellParamsBase`, ensuring consistent and network-safe data passing.
-- **Team-aware filtering** — functions like `IsEnemy`, `IsAlly`, and `CheckForCollisionTarget()` adapt based on `WITH_PWTEAMS`.
-- **Extensible API** — new actor types or parameter sets can be introduced without modifying the core module.
+- **SpellParams-driven logic** : every spawned ability carries a context container derived from `USpellParamsBase`, ensuring consistent and network-safe data passing.
+- **Team-aware filtering** : functions like `IsEnemy`, `IsAlly`, and `CheckForCollisionTarget()` adapt based on `WITH_PWTEAMS`.
+- **Extensible API** : new actor types or parameter sets can be introduced without modifying the core module.
 
 ---
 
