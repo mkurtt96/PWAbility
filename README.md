@@ -56,11 +56,13 @@ Otherwise, it compiles standalone with `WITH_PWTEAMS=0`.
 
 ## 📄 License
 
-Licensed under the **MIT License** — see the `LICENSE` file for details.
+
+This project is licensed under the **MIT License**.  
+See the [LICENSE](LICENSE) file for full details.
 
 ---
 
 ## 👤 Author
 
-**Metehan Goksel Kurtulan (Iompaeqe)**  
+**Metehan Goksel Kurtulan**  
 Game Developer — Systems & Gameplay Engineering  
