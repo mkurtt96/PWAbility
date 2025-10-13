@@ -26,7 +26,7 @@ public class PWAbility : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core", "PWSharedTypes",
+				"Core", "PWSharedTypes", "PWContracts",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);

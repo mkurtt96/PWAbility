@@ -42,6 +42,11 @@ void AWBaseSpellActor::ResetSpell()
 // 	Destroy();
 // }
 
+void AWBaseSpellActor::SetSpellParams_Implementation(USpellParamsBase* Params)
+{
+	SpellParams = Params;
+}
+
 bool AWBaseSpellActor::CheckForCollisionTarget(const AActor* OtherActor) const
 {
 	
