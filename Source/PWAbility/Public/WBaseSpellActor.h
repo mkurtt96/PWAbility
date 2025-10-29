@@ -7,7 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "WBaseSpellActor.generated.h"
 
-class USpellParamsBase;
+class USpellParams;
 enum EPrecastDecalType : uint8;
 
 UCLASS()
@@ -28,9 +28,9 @@ public:
 	// void OnGamePhaseChanged(EGamePhase NewPhase);
 	
 	UPROPERTY(BlueprintReadWrite, Replicated)
-	USpellParamsBase* SpellParams;
+	USpellParams* SpellParams;
 
-	virtual void SetSpellParams_Implementation(USpellParamsBase* Params) override;
+	virtual void SetSpellParams_Implementation(USpellParams* Params) override;
 	
 protected:
 	//Target

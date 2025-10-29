@@ -42,7 +42,7 @@ void AWBaseSpellActor::ResetSpell()
 // 	Destroy();
 // }
 
-void AWBaseSpellActor::SetSpellParams_Implementation(USpellParamsBase* Params)
+void AWBaseSpellActor::SetSpellParams_Implementation(USpellParams* Params)
 {
 	SpellParams = Params;
 }
