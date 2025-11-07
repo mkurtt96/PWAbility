@@ -53,7 +53,7 @@ bool AWBaseSpellActor::CheckForCollisionTarget(const AActor* OtherActor) const
 #if WITH_PWTEAMS
 	return UTeamFunctions::MatchesMask(SpellParams->SourceAvatar, OtherActor, SpellParams->TargetCollisionMask);
 #else
-	return false;
+	return true;
 #endif
 }
 
