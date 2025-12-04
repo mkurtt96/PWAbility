@@ -4,7 +4,6 @@
 #include "BaseProjectile.h"
 
 #include "AbilityEnums.h"
-#include "MyEffectActor.h"
 #include "Ability/SpellParams.h"
 #include "Components/AudioComponent.h"
 #include "Components/SphereComponent.h"
@@ -12,9 +11,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "NiagaraFunctionLibrary.h"
 #include "PWAbility.h"
-#include "Ability/Damageable.h"
-#include "Ability/Effectable.h"
-#include "Ability/PWEffectReceiverInterface.h"
+#include "Ability/Affectable.h"
+#include "Ability/EffectReceiver.h"
 
 ABaseProjectile::ABaseProjectile()
 {
@@ -38,9 +36,6 @@ ABaseProjectile::ABaseProjectile()
 void ABaseProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-
-	if (HasAuthority())
-		SetLifeSpan(CalculateLifeTime());
 
 	Sphere->OnComponentBeginOverlap.AddDynamic(this, &ABaseProjectile::OnOverlap);
 	LoopingSound = UGameplayStatics::SpawnSoundAttached(ActiveSoundLoop, GetRootComponent());
@@ -124,9 +119,9 @@ void ABaseProjectile::HandleProjectileCollision(const AActor* OtherActor)
 	 }
 }
 
-void ABaseProjectile::SimpleDealDamageAndDestroy(AActor* OtherActor)
+void ABaseProjectile::SimpleApplyEffectsAndDestroy(AActor* OtherActor)
 {
-	SimpleDealDamage(OtherActor);
+	SimpleApplyEffects(OtherActor);
 
 	if (HasAuthority() && ShouldDestroy())
 	{
@@ -134,29 +129,26 @@ void ABaseProjectile::SimpleDealDamageAndDestroy(AActor* OtherActor)
 	}
 }
 
-void ABaseProjectile::SimpleDealDamage(AActor* OtherActor)
+void ABaseProjectile::SimpleApplyEffects(AActor* OtherActor)
 {
 	HandleImpactEffects();
 
 	if (HasAuthority())
 	{
 		if (CheckForEffectTarget(OtherActor))
-			ApplyDamageEffect(OtherActor);
+			ApplyEffects(OtherActor);
 	}
 }
 
-void ABaseProjectile::ApplyDamageEffect(AActor* OtherActor) const
+void ABaseProjectile::ApplyEffects(AActor* OtherActor) const
 {
 	if (!HasAuthority()) return;
 
 	SpellParams->ActorHit = OtherActor;
 	
-	UObject* Receiver = OtherActor->GetClass()->ImplementsInterface(UPWEffectReceiverInterface::StaticClass())? IPWEffectReceiverInterface::Execute_GetEffectReceiver(OtherActor) : OtherActor;
-	if (Receiver && Receiver->GetClass()->ImplementsInterface(UDamageable::StaticClass()))
-		IDamageable::Execute_ApplyDamage(Receiver, SpellParams);
-	
-	if (Receiver && Receiver->GetClass()->ImplementsInterface(UEffectable::StaticClass()))
-		IEffectable::Execute_ApplyEffects(Receiver, SpellParams);
+	UObject* Receiver = OtherActor->GetClass()->ImplementsInterface(UEffectReceiver::StaticClass())? IEffectReceiver::Execute_GetEffectReceiver(OtherActor) : OtherActor;
+	if (Receiver && Receiver->GetClass()->ImplementsInterface(UAffectable::StaticClass()))
+		IAffectable::Execute_ApplyEffects(Receiver, SpellParams);
 }
 
 void ABaseProjectile::HandleImpactEffects()

@@ -80,7 +80,7 @@ protected:
 	
 	//Effects
 	UFUNCTION(BlueprintCallable, Category = "Projectile|Effects")
-	virtual void ApplyDamageEffect(AActor* OtherActor) const; //server only
+	virtual void ApplyEffects(AActor* OtherActor) const; //server only
 	
 	//Impact Effects
 	UFUNCTION(BlueprintCallable, Category = "Projectile|Effects")
@@ -92,12 +92,12 @@ protected:
 	/** Predefined Hit Logic. Ideally should be called on Hit. Will Destroy on Projectile Hit.
 	 * Handles Impact Effects. Applies Damage Effect if ShouldApplyEffect. And Destroy if ShouldDestroy. */
 	UFUNCTION(BlueprintCallable)
-	virtual void SimpleDealDamageAndDestroy(AActor* OtherActor);
+	virtual void SimpleApplyEffectsAndDestroy(AActor* OtherActor);
 	
 	/** Deal Damage.
 	 *Handles Impact Effects. Applies Damage Effect if ShouldApplyEffect.*/
 	UFUNCTION(BlueprintCallable)
-	virtual void SimpleDealDamage (AActor* OtherActor);
+	virtual void SimpleApplyEffects (AActor* OtherActor);
 
 	UFUNCTION(BlueprintCallable, Category = "Projectile|Data")
 	FORCEINLINE bool IsANewTarget(const AActor* OtherActor) const { return LastHitActor != OtherActor; }
@@ -112,6 +112,7 @@ private:
 
 public: // GETTERS
 	UWProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "Projectile|Data")
-	FORCEINLINE float CalculateLifeTime() const { return SpellParams->More->GetFloat("Range") / SpellParams->More->GetFloat("Speed"); }
+	UFUNCTION(BlueprintImplementableEvent, BlueprintPure, Category = "Projectile|Data")
+	float CalculateLifeTime();
+
 };
